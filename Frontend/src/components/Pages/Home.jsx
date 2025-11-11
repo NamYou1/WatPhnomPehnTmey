@@ -1,125 +1,123 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import About from './About';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const initialData = [
+  {
+    id: 1,
+    title: "Mountain Adventure",
+    description:
+      "Enjoy the breathtaking views and the thrill of climbing the majestic mountains.",
+    imgUrl:
+      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
+    vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+  },
+  {
+    id: 2,
+    title: "Beach Relaxation",
+    description:
+      "Experience peace and calm on golden sands with crystal clear waters.",
+    imgUrl:
+      "https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp",
+    vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+  },
+  {
+    id: 3,
+    title: "Forest Camping",
+    description:
+      "Reconnect with nature and enjoy a quiet night under a blanket of stars.",
+    imgUrl:
+      "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
+    vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+  },
+  {
+    id: 4,
+    title: "City Lights",
+    description:
+      "Explore vibrant nightlife, modern architecture, and endless entertainment.",
+    imgUrl:
+      "https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp",
+    vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+  },
+];
 
 const Home = () => {
+  const [activities] = useState(initialData);
   const navigate = useNavigate();
 
   const handleCardClick = (id) => {
     navigate(`/details/${id}`);
   };
+
   return (
-    <>
-      <div className="carousel w-full">
-        <div id="slide1" className="carousel-item relative w-full">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
-            className="w-full" />
-          <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-            <a href="#slide4" className="btn btn-circle">❮</a>
-            <a href="#slide2" className="btn btn-circle">❯</a>
-          </div>
+    <div className="min-h-screen bg-base-200">
+      {/* 🌄 Carousel - Centered and 70% size */}
+      <div className="flex justify-center items-center py-5">
+        <div className="carousel w-[70vw] h-[70vh] rounded-lg shadow-xl">
+          {initialData.map((slide, index) => (
+            <div
+              key={slide.id}
+              id={`slide${index + 1}`}
+              className="carousel-item relative w-full h-full"
+            >
+              <img 
+                src={slide.imgUrl} 
+                alt={slide.title} 
+                className="w-full h-full object-cover rounded-lg" 
+              />
+              <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+                <a
+                  href={`#slide${
+                    index === 0 ? initialData.length : index
+                  }`}
+                  className="btn btn-circle"
+                >
+                  ❮
+                </a>
+                <a
+                  href={`#slide${
+                    index === initialData.length - 1 ? 1 : index + 2
+                  }`}
+                  className="btn btn-circle"
+                >
+                  ❯
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
-        <div id="slide2" className="carousel-item relative w-full">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-            className="w-full" />
-          <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-            <a href="#slide1" className="btn btn-circle">❮</a>
-            <a href="#slide3" className="btn btn-circle">❯</a>
-          </div>
-        </div>
-        <div id="slide3" className="carousel-item relative w-full">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-            className="w-full" />
-          <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-            <a href="#slide2" className="btn btn-circle">❮</a>
-            <a href="#slide4" className="btn btn-circle">❯</a>
-          </div>
-        </div>
-        <div id="slide4" className="carousel-item relative w-full">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
-            className="w-full" />
-          <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-            <a href="#slide3" className="btn btn-circle">❮</a>
-            <a href="#slide1" className="btn btn-circle">❯</a>
-          </div>
-        </div>
-      </div>  
-      <h2 className="text-2xl font-bold p-4">Activities</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        <div 
-          className="card bg-base-100 shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer" 
-          onClick={() => handleCardClick(1)}
-        >
-          <figure>
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-              className="w-full h-48 object-cover" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-            <div className="card-actions justify-end">
-              <button className="btn btn-ghost btn-sm">View Details →</button>
+      </div>
+
+      {/* 🧭 Section Title */}
+      <h2 className="text-3xl font-bold text-center  mb-4 text-primary">
+        Featured Activities
+      </h2>
+
+      {/* 🏕️ Cards Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 pb-10">
+        {activities.map(({ id, imgUrl, title, description }) => (
+          <div
+            key={id}
+            className="card bg-base-100 shadow-md hover:shadow-xl cursor-pointer transition-transform transform hover:scale-105"
+            onClick={() => handleCardClick(id)}
+          >
+            <figure>
+              <img
+                src={imgUrl}
+                alt={title}
+                className="w-full h-48 object-cover"
+              />
+            </figure>
+            <div className="card-body">
+              <h2 className="card-title text-lg font-semibold">{title}</h2>
+              <p className="text-sm text-gray-500">{description}</p>
+              <div className="card-actions justify-end">
+                <button className="btn btn-sm btn-primary">View Details</button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="card bg-base-100 shadow-sm">
-          <figure>
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-              className="w-full h-48 object-cover" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-          </div>
-        </div>
-        <div className="card bg-base-100 shadow-sm">
-          <figure>
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-              className="w-full h-48 object-cover" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-          </div>
-        </div>
-        <div className="card bg-base-100 shadow-sm">
-          <figure>
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-              className="w-full h-48 object-cover" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-          </div>
-        </div>
-        <div className="card bg-base-100 shadow-sm">
-          <figure>
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes"
-              className="w-full h-48 object-cover" />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-          </div>
-        </div>
-
+        ))}
       </div>
- {/* <About/> */}
-    </>
+    </div>
   );
 };
 
