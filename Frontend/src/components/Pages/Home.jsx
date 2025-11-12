@@ -10,6 +10,7 @@ const initialData = [
     imgUrl:
       "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
     vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    year: 2024,
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ const initialData = [
     imgUrl:
       "https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp",
     vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    year: 2025,
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ const initialData = [
     imgUrl:
       "https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
     vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    year: 2024,
   },
   {
     id: 4,
@@ -37,12 +40,24 @@ const initialData = [
     imgUrl:
       "https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp",
     vdourl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    year: 2025,
   },
 ];
 
 const Home = () => {
   const [activities] = useState(initialData);
+  const [selectedYear, setSelectedYear] = useState(null);
   const navigate = useNavigate();
+
+  // Get unique years from activities
+  const uniqueYears = [...new Set(initialData.map((item) => item.year))].sort(
+    (a, b) => b - a
+  );
+
+  // Filter activities by selected year
+  const filteredActivities = selectedYear
+    ? activities.filter((activity) => activity.year === selectedYear)
+    : activities;
 
   const handleCardClick = (id) => {
     navigate(`/details/${id}`);
@@ -88,13 +103,45 @@ const Home = () => {
       </div>
 
       {/* 🧭 Section Title */}
-      <h2 className="text-3xl font-bold text-center  mb-4 text-primary">
+      <h2 className="text-3xl font-bold text-center mb-4 text-primary">
         Featured Activities
       </h2>
 
+      {/* 📅 Year Filter */}
+      <div className="flex justify-center gap-3 mb-6 flex-wrap px-4">
+        <button
+          onClick={() => setSelectedYear(null)}
+          className={`btn ${
+            selectedYear === null ? "btn-primary" : "btn-outline"
+          }`}
+        >
+          All Years
+        </button>
+        {uniqueYears.map((year) => (
+          <button
+            key={year}
+            onClick={() => setSelectedYear(year)}
+            className={`btn ${
+              selectedYear === year ? "btn-primary" : "btn-outline"
+            }`}
+          >
+            {year}
+          </button>
+        ))}
+      </div>
+
+      {/* No results message */}
+      {filteredActivities.length === 0 && (
+        <div className="text-center py-10">
+          <p className="text-lg text-gray-500">
+            No activities found for year {selectedYear}
+          </p>
+        </div>
+      )}
+
       {/* 🏕️ Cards Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 pb-10">
-        {activities.map(({ id, imgUrl, title, description }) => (
+        {filteredActivities.map(({ id, imgUrl, title, description, year }) => (
           <div
             key={id}
             className="card bg-base-100 shadow-md hover:shadow-xl cursor-pointer transition-transform transform hover:scale-105"
@@ -109,6 +156,7 @@ const Home = () => {
             </figure>
             <div className="card-body">
               <h2 className="card-title text-lg font-semibold">{title}</h2>
+              <p className="text-xs text-primary font-semibold">{year}</p>
               <p className="text-sm text-gray-500">{description}</p>
               <div className="card-actions justify-end">
                 <button className="btn btn-sm btn-primary">View Details</button>
