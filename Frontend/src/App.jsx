@@ -1,9 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { LanguageProvider } from "./context/LanguageContext";
 import Home from "./components/Pages/Home";
 import About from "./components/Pages/About";
 import Contact from "./components/Pages/Contact";
 import Details from "./components/Pages/Details";
 import RootLayout from "./Layout/RootLayout";
+import CardInformation, {
+  initialData,
+} from "./components/Card/CardInformation";
+import CardInformationDetail from "./components/Card/CardInformationDetail";
 const routerdom = createBrowserRouter([
   {
     path: "/",
@@ -20,17 +25,32 @@ const routerdom = createBrowserRouter([
       },
       {
         path: "details/:id",
-        element: <Details />,
+        element: <CardInformationDetail />,
       },
       {
         path: "contact",
         element: <Contact />,
       },
-      {},
+      {
+        path: "card",
+        element: <Home />,
+        children: [
+          {
+            // path : ":id",
+            index: true,
+            element: <CardInformation />,
+            // loader: initialData,
+          },
+        ],
+      },
     ],
   },
 ]);
 const App = () => {
-  return <RouterProvider router={routerdom}></RouterProvider>;
+  return (
+    <LanguageProvider>
+      <RouterProvider router={routerdom} />
+    </LanguageProvider>
+  );
 };
 export default App;
